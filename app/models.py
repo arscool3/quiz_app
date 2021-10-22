@@ -17,8 +17,8 @@ class Question(models.Model):
 class Quiz(models.Model) :
     title = models.CharField(max_length=50)
 
-    start = models.DateField(default="2021-10-10")
-    end = models.DateField(default="2021-10-11")
+    start = models.DateTimeField(default="1024-10-10")
+    end = models.DateTimeField(default="2040-10-11")
 
     description = models.CharField(max_length=250)
 class Answer(models.Model) :

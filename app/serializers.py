@@ -20,7 +20,7 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer) :
 class QuizCreateSerializer(serializers.ModelSerializer) :
     class Meta :
         model = Quiz
-        fields = ('title', 'description')
+        fields = '__all__'
 class QuestionEditSerializer(serializers.ModelSerializer) :
     class Meta :
         model = Question

@@ -5,7 +5,8 @@ from .serializers import *
 from rest_framework import generics, viewsets
 from .models import *
 from django.contrib.auth.models import User
-
+from datetime import datetime
+from .permissions import *
 class MyObtainTokenPairView(TokenObtainPairView):
     permission_classes = (AllowAny,)
     serializer_class = MyTokenObtainPairSerializer
@@ -18,7 +19,8 @@ class QuizCreateView(generics.CreateAPIView) :
 class QuestionCreateView(generics.CreateAPIView) :
     queryset = Question.objects.all()
     serializer_class = QuestionCreateSerializer
-    permission_classes = (IsAdminUser, )
+
+    permission_classes = (IsTimeNotDefined, )
 
 class QuizDeleteView(generics.DestroyAPIView) :
     queryset = Quiz.objects.all()
@@ -28,11 +30,11 @@ class QuizDeleteView(generics.DestroyAPIView) :
 class QuestionDeleteView(generics.DestroyAPIView) :
     queryset = Question.objects.all()
     serializer_class = QuestionEditSerializer
-    permission_classes = (IsAdminUser, )
+    permission_classes = (IsTimeNotDefined, )
 class QuestionEditView(generics.UpdateAPIView) :
     queryset = Question.objects.all()
     serializer_class = QuestionEditSerializer
-    permission_classes = (IsAdminUser, )
+    permission_classes = (IsTimeNotDefined, )
 class QuizEditView(generics.UpdateAPIView) :
     queryset = Quiz.objects.all()
     serializer_class = QuizCreateSerializer
@@ -45,6 +47,10 @@ class RegisterView(generics.CreateAPIView) :
 class GetQuizView(generics.ListAPIView) :
     queryset = Quiz.objects.all()
     serializer_class = QuizListSerializer
+    def get_queryset(self):
+        now = datetime.now()
+        #print(now)
+        return Quiz.objects.filter(end__gte = now).filter(start__lte = now)
 class GetQuestionView(generics.ListAPIView) :
 
     serializer_class = QuestionListSerializer
@@ -55,6 +61,9 @@ class CreateAnswer(generics.CreateAPIView) :
 
     serializer_class = AnswerQuestionSerializer
     queryset = Answer.objects.all()
+
+    def perform_create(self, serializer):
+        serializer.save(user_id=self.request.user.id)
 
 class GetAnswerList(generics.ListAPIView) :
     serializer_class =  AnswerQuestionSerializer
