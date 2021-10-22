@@ -4,10 +4,10 @@
 
 **Запуск на локальном сервере** 
 
-'python manage.py runserver'
+`python manage.py runserver`
 
 **API документация** 
 
-'AdminDocumentation для админа' 
+`AdminDocumentation для админа` 
 
-'UserDocumentation для пользователя'
+`UserDocumentation для пользователя`
